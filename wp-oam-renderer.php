@@ -133,6 +133,7 @@ function wpoamr_shortcode_oam($atts, $content = null) {
     $atts       = shortcode_atts(array(
       'id'      => '',
       'width'   => 960,
+      'height'  => '',
     ), $atts);
     // animation metadata
     $attach     = get_post($atts['id']); 
@@ -140,8 +141,15 @@ function wpoamr_shortcode_oam($atts, $content = null) {
     $pathinfo   = pathinfo($attach->guid);
     $item       = $pathinfo['filename'];
     $path       = $pathinfo['dirname'];
+
+    // Respect height parameters
+    if($atts['height']){
+      $height = $atts['height'];
+
     // calculate proportional height
-    $height     = (int) $atts['width'] * (int) $meta['height'][0] / (int) $meta['width'][0];
+    }else{
+      $height     = (int) $atts['width'] * (int) $meta['height'][0] / (int) $meta['width'][0];
+    }
     // return the ouput
     return '<iframe src="'.$path.'/'.$item.'/Assets/'.$attach->post_title.'.html" width="'.$atts['width'].'" height="'.$height.'"></iframe>';
   } else {
